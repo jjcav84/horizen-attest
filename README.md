@@ -1,3 +1,7 @@
+<p align="center">
+  <a href="https://www.orkidlabs.com"><img src="assets/logo.png" alt="Orkid Labs" width="220" /></a>
+</p>
+
 # horizen-attest — Zero-Knowledge Attestations on Horizen Base L3
 
 > *Prove credentials without revealing them. Pay zero fees for preserving
