@@ -2,6 +2,8 @@
 
 > *Prove credentials without revealing them. Pay zero fees for preserving
 > privacy.*
+>
+> **By [Orkid Labs](https://www.orkidlabs.com)** — privacy-first crypto engineering
 
 Horizen adaptation of [zk-attest](https://github.com/jjcav84/zk-attest) —
 replaces Hedera HCS/HTS with ZEN token staking and
@@ -76,6 +78,12 @@ Part of the negentropy-powered privacy stack for Horizen:
 - [horizen-age](https://github.com/jjcav84/horizen-age) — age verification
 - [horizen-attest](https://github.com/jjcav84/horizen-attest) — **this repo**
 - [horizen-ballot](https://github.com/jjcav84/horizen-ballot) — anonymous voting
+
+## About
+
+Built by [Orkid Labs](https://www.orkidlabs.com) — a privacy-first crypto
+engineering lab building thermodynamic infrastructure for decentralized
+systems.
 
 ## License
 
