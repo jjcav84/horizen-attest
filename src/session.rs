@@ -44,6 +44,8 @@ impl Default for AttestationSession {
 
 impl AttestationSession {
     pub fn new(kind: AttestationKind, threshold: u64, issuer_trust: f64, zen_staked: f64) -> Self {
+        assert!(issuer_trust.is_finite() && (0.0..=1.0).contains(&issuer_trust), "issuer_trust must be in [0,1]");
+        assert!(zen_staked.is_finite() && zen_staked >= 0.0, "zen_staked must be non-negative and finite");
         Self {
             kind,
             threshold,

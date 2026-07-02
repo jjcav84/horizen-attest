@@ -20,6 +20,9 @@ contract HorizenAttestRegistry {
     /// @notice ZenKinetic gate contract (fee determination)
     address public immutable zenKineticGate;
 
+    /// @notice Issuer address that signs valid attestations
+    address public immutable issuer;
+
     /// @notice Basic tier stake threshold (100 ZEN with 18 decimals)
     uint256 public constant BASIC_STAKE = 100e18;
 
@@ -51,9 +54,13 @@ contract HorizenAttestRegistry {
         uint24 feePaid
     );
 
-    constructor(address _zenToken, address _zenKineticGate) {
+    constructor(address _zenToken, address _zenKineticGate, address _issuer) {
+        require(_zenToken != address(0), "HorizenAttest: zero_zenToken");
+        require(_zenKineticGate != address(0), "HorizenAttest: zero_zenKineticGate");
+        require(_issuer != address(0), "HorizenAttest: zero_issuer");
         zenToken = _zenToken;
         zenKineticGate = _zenKineticGate;
+        issuer = _issuer;
     }
 
     /// @notice Create a ZK attestation on Horizen.
@@ -70,6 +77,7 @@ contract HorizenAttestRegistry {
         bytes calldata proof,
         uint256[] calldata publicSignals
     ) external returns (uint24 fee, uint256 negentropyBits) {
+        require(uint256(kind) <= uint256(AttestationType.Credential), "HorizenAttest: invalid_kind");
         require(!attestations[proofId].verified, "HorizenAttest: already_exists");
 
         // Check ZEN staking access — Basic tier required
@@ -115,10 +123,28 @@ contract HorizenAttestRegistry {
 
     // --- Internal helpers ---
 
+    /// @notice Verify an ECDSA signature from the trusted issuer over the public signals.
+    /// @dev Proof must be a 65-byte Ethereum signature: r (32) + s (32) + v (1).
     function _verifyProof(bytes calldata proof, uint256[] calldata publicSignals)
-        internal pure returns (bool)
+        internal view returns (bool)
     {
-        return proof.length > 0 && publicSignals.length > 0;
+        if (proof.length != 65) return false;
+        bytes32 digest = keccak256(abi.encodePacked(publicSignals));
+        bytes32 ethSignedHash = keccak256(abi.encodePacked("\x19Ethereum Signed Message:\n32", digest));
+        bytes32 r;
+        bytes32 s;
+        uint8 v;
+        assembly {
+            r := calldataload(proof.offset)
+            s := calldataload(add(proof.offset, 32))
+            v := byte(0, calldataload(add(proof.offset, 64)))
+        }
+        if (v < 27) v += 27;
+        if (v != 27 && v != 28) return false;
+        // Reject malleable signatures
+        if (uint256(s) > 0x7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF5D576E7357A4501DDFE92F46681B20A0) return false;
+        address recovered = ecrecover(ethSignedHash, v, r, s);
+        return recovered == issuer;
     }
 
     function _log2Approx(uint256 x) internal pure returns (uint256) {
