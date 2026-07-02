@@ -85,7 +85,7 @@ contract HorizenAttestRegistry {
         require(staked >= BASIC_STAKE, "HorizenAttest: insufficient_stake");
 
         // Verify the ZK proof
-        require(_verifyProof(proof, publicSignals), "HorizenAttest: invalid_proof");
+        require(_verifyProof(proofId, kind, threshold, proof, publicSignals), "HorizenAttest: invalid_proof");
 
         // Calculate negentropy: N = constraints × log₂(threshold)
         // zk-attest circuit: 27 constraints
@@ -125,11 +125,24 @@ contract HorizenAttestRegistry {
 
     /// @notice Verify an ECDSA signature from the trusted issuer over the public signals.
     /// @dev Proof must be a 65-byte Ethereum signature: r (32) + s (32) + v (1).
-    function _verifyProof(bytes calldata proof, uint256[] calldata publicSignals)
-        internal view returns (bool)
-    {
+    function _verifyProof(
+        bytes32 proofId,
+        AttestationType kind,
+        uint256 threshold,
+        bytes calldata proof,
+        uint256[] calldata publicSignals
+    ) internal view returns (bool) {
         if (proof.length != 65) return false;
-        bytes32 digest = keccak256(abi.encodePacked(publicSignals));
+        // Bind signature to this specific action: proofId, kind, threshold, chain, contract
+        // Prevents replay across different attestations or contracts
+        bytes32 digest = keccak256(abi.encodePacked(
+            proofId,
+            kind,
+            threshold,
+            block.chainid,
+            address(this),
+            publicSignals
+        ));
         bytes32 ethSignedHash = keccak256(abi.encodePacked("\x19Ethereum Signed Message:\n32", digest));
         bytes32 r;
         bytes32 s;
