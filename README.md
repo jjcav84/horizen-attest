@@ -73,6 +73,42 @@ The ZK circuit and proof generation are the same; the chain integration
 changes from Hedera HCS/HTS to Horizen Base L3 with ZEN staking and
 ZenKinetic privacy gating.
 
+## Thrive Horizen Boost Program (#39) — Grant Plan
+
+### Ecosystem value proposition
+
+horizen-attest brings zero-knowledge attestations to Horizen Base L3. This is the Horizen-native adaptation of [zk-attest](https://github.com/jjcav84/zk-attest) — an existing, working project migrating to Horizen infrastructure. The ZK circuit stays the same; the chain integration changes from Hedera HCS/HTS to Horizen Base L3 with ZEN staking and ZenKinetic privacy gating.
+
+### Milestone roadmap
+
+Progressive achievement over 120 days, following Thrive's Horizen Boost Program milestone structure.
+
+**Application Requirements (10% unlocked at approval)**:
+- ✅ Comprehensive audit of the existing project (zk-attest) with a detailed privacy enhancement plan
+- ✅ Clear migration and deployment strategy to Horizen infrastructure
+- ✅ Demonstrated traction and user base on the current platform with verifiable metrics
+- ✅ Privacy feature roadmap and technical implementation timeline
+
+**Milestone 1 (20% unlocked) — 30 days post approval**:
+- Successful deployment and integration with Horizen privacy features
+- Privacy capabilities successfully integrated into the existing application
+- User migration plan executed with active user transition
+
+**Milestone 2 (30% unlocked) — 75 days post approval**:
+- Privacy features improving user experience
+- Integration with other Horizen ecosystem projects
+- Growth metrics (choose one):
+  - TVL: $250K+ in ZEN locked in smart contracts, staking, or liquidity pools
+  - Volume: 50K+ transactions demonstrating privacy preservation
+  - Unique Wallets: 1,000+ verified users utilizing privacy features
+
+**Milestone 3 (40% unlocked) — 120 days post approval**:
+- Become a successful case study for the Horizen ecosystem
+- Scale metrics (choose one):
+  - TVL: $500K+ in ZEN locked in smart contracts, staking, or liquidity pools
+  - Volume: 100K+ transactions demonstrating privacy preservation
+  - Unique Wallets: 2,500+ verified users utilizing privacy features
+
 ## Ecosystem
 
 Part of the negentropy-powered privacy stack for Horizen:
