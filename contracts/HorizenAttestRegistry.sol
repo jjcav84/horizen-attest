@@ -78,6 +78,7 @@ contract HorizenAttestRegistry {
         uint256[] calldata publicSignals
     ) external returns (uint24 fee, uint256 negentropyBits) {
         require(uint256(kind) <= uint256(AttestationType.Credential), "HorizenAttest: invalid_kind");
+        require(publicSignals.length > 0, "HorizenAttest: empty_signals");
         require(!attestations[proofId].verified, "HorizenAttest: already_exists");
 
         // Check ZEN staking access — Basic tier required
